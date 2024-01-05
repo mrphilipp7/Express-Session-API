@@ -2,14 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const morgan = require("morgan");
+const compression = require("compression");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
+const passport = require("passport");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const { handleError } = require("./middleware/handleError");
-const passport = require("passport");
-
 require("./authentication/passport");
 
 //required routes
@@ -18,6 +18,9 @@ const errorRoute = require("./routes/errorRoute");
 
 // Initialize app
 const app = express();
+
+//compress res body to send JSON to client quicker
+app.use(compression());
 
 //port sever runs on
 const PORT = 3007;
