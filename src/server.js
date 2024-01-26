@@ -3,51 +3,56 @@ const cors = require("cors");
 const session = require("express-session");
 const morgan = require("morgan");
 const compression = require("compression");
-const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const passport = require("passport");
+const config = require("./config/configuration");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const { handleError } = require("./middleware/handleError");
 require("./authentication/passport");
 
-//required routes
+// Required routes
 const userRoute = require("./routes/userRoute");
 const errorRoute = require("./routes/errorRoute");
+const sessionRoute = require("./routes/sessionRoute");
 
 // Initialize app
 const app = express();
 
-//compress res body to send JSON to client quicker
+// Access configuration properties using convict
+// Port sever runs on http://localhost:3007/ when no env port is given
+const PORT = config.get("port");
+const SESSION_SECRET = config.get("sessionSecret");
+const NODE_ENV = config.get("env");
+
+// Compress res body to send JSON to client quicker
 app.use(compression());
 
-//port sever runs on
-const PORT = 3007;
-
-// Set path to .env file and check for errors
-const dotenvConfig = dotenv.config();
-if (dotenvConfig.error) {
-  console.error("Error: with ENV");
-}
-
-// Use the cors middleware options to configure which domains can be accessed
+// Configure which domains can be access API
+const corsOptions = {
+  origin: process.env.PORT | "*",
+  optionsSuccessStatus: 200,
+};
 app.use(cors());
 
-// allows req.body and req.query params able to be accessed
+// Allows req.body and req.query params able to be accessed
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//protect headers
+// Protect headers
 app.use(helmet());
 
-// runs anytime a request is made
-app.use(morgan("tiny"));
+if (NODE_ENV === "development") {
+  // Runs anytime a request is made
+  console.log("Running in dev mode");
+  app.use(morgan("tiny"));
+}
 
 //-----session setup-----//
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     rolling: true,
@@ -67,6 +72,7 @@ app.use(passport.session());
 
 //-----routes-----//
 app.use("/api/user", userRoute);
+app.use("/api/session", sessionRoute);
 app.use("*", errorRoute);
 
 //-----middleware-----//
@@ -77,11 +83,8 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to Mongo");
-    // start and run server
     app.listen(PORT, () =>
-      console.log(
-        `*** Express server listening on http://localhost:${PORT}/ ***`
-      )
+      console.log(`*** Express server listening on ${PORT} ***`)
     );
   })
   .catch((err) => {
