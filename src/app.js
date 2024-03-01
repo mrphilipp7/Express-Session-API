@@ -1,14 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const session = require("express-session");
 const morgan = require("morgan");
 const compression = require("compression");
+const createSession = require("./services/session/session");
 const xss = require("xss-clean");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const passport = require("passport");
 const dotenv = require("dotenv");
-const MongoStore = require("connect-mongo");
 require("./services/authentication/passport");
 
 // Required routes
@@ -53,21 +52,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 //-----session setup-----//
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    rolling: true,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI,
-      collectionName: "sessions",
-    }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 2, // 2 hours
-    },
-  })
-);
+createSession(app);
 
 //----middleware----//
 app.use(controlHeaders);
