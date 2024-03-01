@@ -1,4 +1,4 @@
-const handlePassportAuth = (req, res, next) => {
+const requireUser = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next(new Error("Not authenticated"));
   } else {
@@ -6,4 +6,4 @@ const handlePassportAuth = (req, res, next) => {
   }
 };
 
-module.exports = { handlePassportAuth };
+module.exports = { requireUser };

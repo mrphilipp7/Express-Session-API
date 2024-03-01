@@ -7,7 +7,6 @@ const checkStatus = (req, res, next) => {
   try {
     //if-else to determine status code based on authorization
     if (req.isAuthenticated()) {
-      const user = { id: req.user.id, email: req.user.email, status: 200 };
       res.status(200).json({
         isAuthenticated: req.isAuthenticated(),
         id: req.user.id,
@@ -17,6 +16,7 @@ const checkStatus = (req, res, next) => {
     } else {
       res.status(401).json({
         isAuthenticated: req.isAuthenticated(),
+        id: null,
         user: null,
         status: 401,
       });
