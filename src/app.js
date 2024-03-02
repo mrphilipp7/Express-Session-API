@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const morgan = require("morgan");
 const compression = require("compression");
 const createSession = require("./services/session/session");
@@ -8,6 +7,7 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const passport = require("passport");
 const dotenv = require("dotenv");
+const configureCors = require("./services/cors/corsConfig");
 require("./services/authentication/passport");
 
 // Required routes
@@ -22,6 +22,12 @@ const { controlHeaders } = require("./middleware/controlHeaders");
 // Initialize app
 const app = express();
 
+// Protect headers
+app.use(helmet());
+
+// Use xss-clean middleware
+app.use(xss());
+
 const dotenvConfig = dotenv.config();
 if (dotenvConfig.error) {
   console.error("Error: with ENV");
@@ -31,21 +37,11 @@ if (dotenvConfig.error) {
 app.use(compression());
 
 // Configure which domains can be access API
-const corsOptions = {
-  origin: process.env.ALLOWED_ORIGIN,
-  optionsSuccessStatus: 200,
-};
-app.use(cors({ origin: corsOptions, credentials: true }));
+app.use(configureCors());
 
 // Allows req.body and req.query params able to be accessed
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// Protect headers
-app.use(helmet());
-
-// Use xss-clean middleware
-app.use(xss());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("tiny"));
