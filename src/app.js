@@ -1,13 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const compression = require("compression");
-const createSession = require("./services/session/session");
+const createSession = require("./config/session.config");
 const xss = require("xss-clean");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const passport = require("passport");
 const dotenv = require("dotenv");
-const configureCors = require("./services/cors/corsConfig");
+const configureCors = require("./config/cors.config");
 require("./services/authentication/passport");
 
 // Required routes
