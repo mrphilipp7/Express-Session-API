@@ -31,6 +31,10 @@ passport.use(
         }
         //user is found
         if (user) {
+          if (!user.verified) {
+            return done(null, false, { message: "Email is not verified" });
+          }
+
           const isValid = await bcrypt.compare(password, user.password);
 
           if (isValid) {

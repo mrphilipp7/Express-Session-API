@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-
+const verificationEmail = require("../services/email/emailVerification");
 /**
  * @desc make new user
  * @route POST api/user/register
@@ -15,7 +15,10 @@ const registerUser = async (req, res, next) => {
     const newUser = await User.create({
       email,
       password: hashedPassword,
+      verified: false,
     });
+
+    await verificationEmail(email, newUser._id);
 
     res.status(201).json(newUser);
   } catch (err) {
@@ -78,4 +81,29 @@ const logoutUser = async (req, res, next) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getCurrentUser, logoutUser };
+/**
+ * @desc sets a user email to verified
+ * @route POST api/user/verify/:id
+ * @access public
+ */
+const verifyUser = async (req, res, next) => {
+  const userID = req.params.id;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userID,
+      { verified: true },
+      { new: true }
+    );
+    res.status(200).json({ message: "User is verified" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getCurrentUser,
+  logoutUser,
+  verifyUser,
+};

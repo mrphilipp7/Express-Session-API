@@ -14,6 +14,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter a password"],
     },
+    verified: {
+      type: Boolean,
+      required: [true, "Please enter a verified status"],
+    },
   },
   { timestamps: true }
 );
