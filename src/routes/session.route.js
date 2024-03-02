@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { checkStatus } = require("../controllers/sessionController");
+const { checkStatus } = require("../controllers/session.controller");
 
 router.get("/status", checkStatus);
 

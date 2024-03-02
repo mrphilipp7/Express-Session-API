@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("../../models/userModel");
 const bcrypt = require("bcrypt");
+const User = require("../services/user/user.services");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -9,11 +9,12 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);
-    if (!user) {
+    const user = await User.findUserByID(id);
+    if (user) {
+      return done(null, user);
+    } else {
       throw new Error("User not found");
     }
-    return done(null, user);
   } catch (err) {
     done(err, null);
   }
@@ -24,11 +25,8 @@ passport.use(
     { usernameField: "email" },
     async (email, password, done) => {
       try {
-        const user = await User.findOne({ email });
+        const user = await User.findUserByEmail(email);
 
-        if (!user) {
-          return done(null, false, { message: "User not found" });
-        }
         //user is found
         if (user) {
           const isValid = await bcrypt.compare(password, user.password);
@@ -38,6 +36,8 @@ passport.use(
           } else {
             return done(null, false, { message: "Password is not valid" });
           }
+        } else {
+          return done(null, false, { message: "User not found" });
         }
       } catch (err) {
         done(err, null);

@@ -5,9 +5,9 @@ const {
   loginUser,
   getCurrentUser,
   logoutUser,
-} = require("../controllers/userController");
+} = require("../controllers/user.controller");
 const { requireUser } = require("../middleware/requireUser");
-const { validateLogin } = require("../services/validation/validateLogin");
+const { validateLogin } = require("../validation/user/user.validation");
 
 const passport = require("passport");
 

@@ -1,5 +1,5 @@
-const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const User = require("../services/user/user.services");
 
 /**
  * @desc make new user
@@ -11,13 +11,12 @@ const registerUser = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //create user
-    const newUser = await User.create({
-      email,
+    const newUser = await User.createNewUser({
+      email: email,
       password: hashedPassword,
     });
 
-    res.status(201).json(newUser);
+    res.status(newUser.status).json(newUser.response);
   } catch (err) {
     next(err);
   }

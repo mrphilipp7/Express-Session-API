@@ -8,12 +8,12 @@ const helmet = require("helmet");
 const passport = require("passport");
 const dotenv = require("dotenv");
 const configureCors = require("./config/cors.config");
-require("./services/authentication/passport");
+require("./authentication/passport");
 
 // Required routes
-const userRoute = require("./routes/userRoute");
-const errorRoute = require("./routes/errorRoute");
-const sessionRoute = require("./routes/sessionRoute");
+const userRoute = require("./routes/user.route");
+const errorRoute = require("./routes/error.route");
+const sessionRoute = require("./routes/session.route");
 
 // Middleware
 const { catchErrors } = require("./middleware/catchErrors");
