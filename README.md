@@ -18,3 +18,5 @@ Make sure you already have Node.js installed and a MongoDB ready to connect with
 
 ## Features
 The API implements the use of Passportjs to validate users logging in and accessing protected routes. Using the joi package the user can validate to make  sure the req.body inputs are all matching the criteria needed by the route. 
+
+'Email_Verification' branch has a crude format for setting up email verification. This prevents users from logging into their account until they click the link sent to their registered email.
