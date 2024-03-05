@@ -17,4 +17,4 @@ Make sure you already have Node.js installed and a MongoDB ready to connect with
 - ALLOWED_ORIGIN
 
 ## Features
-The API implements the use of Passportjs to validate users logging in and accessing protected routes. Using the joi package the user can validate to make  sure the req.body inputs are all matching the criteria needed by the route. 
+The API implements the use of JWTs with an access token and refresh token. The Refresh Token is handled as an http cookie while the Access token is handled has a Bearer token
