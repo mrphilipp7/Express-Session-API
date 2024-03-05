@@ -5,22 +5,7 @@
  */
 const checkStatus = (req, res, next) => {
   try {
-    //if-else to determine status code based on authorization
-    if (req.isAuthenticated()) {
-      res.status(200).json({
-        isAuthenticated: req.isAuthenticated(),
-        id: req.user.id,
-        user: req.user.email,
-        status: 200,
-      });
-    } else {
-      res.status(401).json({
-        isAuthenticated: req.isAuthenticated(),
-        id: null,
-        user: null,
-        status: 401,
-      });
-    }
+    res.status(200).json({ message: "valid session" });
   } catch (err) {
     next(err);
   }

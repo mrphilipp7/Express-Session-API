@@ -6,17 +6,14 @@ const {
   getCurrentUser,
   logoutUser,
 } = require("../controllers/user.controller");
-const { requireUser } = require("../middleware/requireUser");
 const { validateLogin } = require("../validation/user.validation");
-
-const passport = require("passport");
 
 router.post("/register", registerUser);
 
-router.post("/login", validateLogin, passport.authenticate("local"), loginUser);
+router.post("/login", validateLogin, loginUser);
 
-router.get("/currentUser", requireUser, getCurrentUser);
+router.get("/currentUser", getCurrentUser);
 
-router.post("/logout", requireUser, logoutUser);
+router.post("/logout", logoutUser);
 
 module.exports = router;
