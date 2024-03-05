@@ -12,7 +12,8 @@ Make sure you already have Node.js installed and a MongoDB ready to connect with
 1.     npm i 
 2.   create your .env file and fill it with 
 - MONGODB_URI
-- SESSION_SECRET
+- ACCESS_TOKEN_SECRET
+- REFRESH_TOKEN_SECRET
 - NODE_ENV
 - ALLOWED_ORIGIN
 
