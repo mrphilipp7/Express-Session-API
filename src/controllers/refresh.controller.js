@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 /**
  * @desc refresh JWT
- * @route GET api/user/refresh/
+ * @route GET api/refresh/
  * @access public
  */
 const refreshToken = (req, res) => {
