@@ -1,12 +1,11 @@
-const User = require("../models/user.model");
+const pool = require("../config/db.config");
 
 const createNewUser = async ({ email, password }) => {
   try {
-    const newUser = await User.create({
-      email,
-      password: password,
-    });
-    return { status: "201", response: newUser };
+    const query = `INSERT INTO User (Email, Password) VALUES (?,?)`;
+    const [rows] = await pool.query(query, [email, password]);
+
+    return { status: "201", response: rows };
   } catch (err) {
     return { status: "400", response: err.message };
   }
@@ -14,10 +13,10 @@ const createNewUser = async ({ email, password }) => {
 
 const findUserByID = async (id) => {
   try {
-    const user = await User.findById(id);
+    const query = `SELECT * FROM User WHERE id =(?)`;
+    const [rows] = await pool.query(query, [id]);
 
-    if (user) return user;
-    else return null;
+    return rows;
   } catch (err) {
     return err.message;
   }
@@ -25,10 +24,10 @@ const findUserByID = async (id) => {
 
 const findUserByEmail = async (email) => {
   try {
-    const user = await User.findOne({ email });
+    const query = `SELECT * FROM User WHERE Email = (?)`;
+    const [rows] = await pool.query(query, [email]);
 
-    if (user) return user;
-    else return null;
+    return rows;
   } catch (err) {
     return err.message;
   }

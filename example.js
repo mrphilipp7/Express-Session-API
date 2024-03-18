@@ -60,3 +60,9 @@ async function checkSession(url, options = {}) {
     }
   }
 }
+
+//------- SQL Server -------//
+/*
+The queries may be incorrect so change them as needed. 
+Make sure to change the .env to include the mySQL connection variables. 
+*/
