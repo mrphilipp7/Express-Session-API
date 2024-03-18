@@ -1,20 +1,20 @@
 
-# API built with Expressjs to communicate with a MongoDB backend.
+# API built with Expressjs to communicate with a mySQL backend.
 
-This small application is an example of how a user can utilize node frameworks to make a working API with session based authentication.
+This small application is an example of how a user can utilize node frameworks to make a working API with jwt based authentication.
 
 
 
 
 ## Usage
-Make sure you already have Node.js installed and a MongoDB ready to connect with.
+Make sure you already have Node.js installed and a mysql db ready to connect with.
 
 1.     npm i 
 2.   create your .env file and fill it with 
-- MONGODB_URI
-- ACCESS_TOKEN_SECRET
-- REFRESH_TOKEN_SECRET
-- NODE_ENV
+- MYSQL_HOST
+- MYSQL_USER
+- MYSQL_PASSWORD
+- MYSQL_DATABASE
 - ALLOWED_ORIGIN
 
 ## Features
