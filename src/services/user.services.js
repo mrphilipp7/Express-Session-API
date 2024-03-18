@@ -3,9 +3,9 @@ const pool = require("../config/db.config");
 const createNewUser = async ({ email, password }) => {
   try {
     const query = `INSERT INTO User (Email, Password) VALUES (?,?)`;
-    const [rows] = await pool.query(query, [email, password]);
+    const result = await pool.query(query, [email, password]);
 
-    return { status: "201", response: rows };
+    return { status: "201", response: result };
   } catch (err) {
     return { status: "400", response: err.message };
   }
