@@ -58,8 +58,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //-----routes-----//
-app.use("/api/user", userRoute);
-app.use("/api/session", sessionRoute);
+app.use("/v1/api/user", userRoute);
+app.use("/v1/api/session", sessionRoute);
 app.use("*", errorRoute);
 
 //-----middleware-----//
